@@ -8,12 +8,17 @@ formEl.addEventListener('submit', onFormSubmit);
 
 
 function onFormInput(event) {
-    const formFields = {};
-    const formData = new FormData(formEl);
-    formData.forEach((value, name) => {
-        formFields[name] = value;
-    })
-    localStorage.setItem(LS_KEY, JSON.stringify(formFields));
+    
+    try {
+        const formFields = {};
+        const formData = new FormData(formEl);
+        formData.forEach((value, name) => {
+            formFields[name] = value;
+        })
+        localStorage.setItem(LS_KEY, JSON.stringify(formFields));
+    } catch (error) {
+        console.error("Set state error: ", error.message);
+    }
 }
 
 
@@ -40,7 +45,7 @@ function populateFormInputFields() {
             }
         }        
     } catch (error) {
-      console.log('Get state error: ', error.message);  
+        console.log('Get state error: ', error.message);  
     }
 }
 

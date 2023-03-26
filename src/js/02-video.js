@@ -7,13 +7,26 @@ const TIME_KEY = 'videoplayer-current-time';
 
 player.on('timeupdate', throttle(savePlayingTime, 1000));
 
-function savePlayingTime({seconds}) {
-    localStorage.setItem(TIME_KEY, JSON.stringify(seconds));
+function savePlayingTime({ seconds }) {
+    try {
+        localStorage.setItem(TIME_KEY, JSON.stringify(seconds));
+    } catch (error) {
+        console.error("Set state error: ", error.message);
+    }
 }
 
-const updatePlayingTime = localStorage.getItem(TIME_KEY);
-
-if (updatePlayingTime) {
-    player.setCurrentTime(JSON.parse(updatePlayingTime));
+function updatePlayTime() {
+    try {
+        const getPlayingTime = localStorage.getItem(TIME_KEY);
+        if (getPlayingTime) {
+            player.setCurrentTime(JSON.parse(getPlayingTime));
+        }
+    } catch (error) {
+        console.error("Get state error: ", error.message);
+    }
 }
+
+updatePlayTime();
+
+
 
